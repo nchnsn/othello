@@ -5,13 +5,13 @@ Writing a version of the popular board game Othello (aka reversi) (https://en.wi
 3. Provide me with a tangeble starting point that I can use to refactor as I introduce new concepts, frameworks, into my skillset.
 
 *Step 1* 
-Get Othello working no matter what means possible. Focus on ES5 and vanilla javascript if possible. 
+- [ ] Get Othello working no matter what means possible. Focus on ES5 and vanilla javascript if possible. 
 
 *Step 2*
-Refactor game so that you are not using global variables, you are not copying pasting any code chunks, and think about scalability and memory management.
+ - [ ] Refactor game so that you are not using global variables, you are not copying pasting any code chunks, and think about scalability and memory management.
 
 *Step 3*
-Refactor code again to use Jquery and ES6.
+- [ ] Refactor code again to use Jquery and ES6.
 
 *Step 4*
-Refactor Code and write game in React.
+- [ ] Refactor Code and write game in React.
