@@ -192,6 +192,7 @@ var checkAllNeighbors = function(x, y, direction){
             console.log('DIRECTION ' + element.direction);
             console.log('yes!');
             console.log(element);
+            runTracker = [];
             initRun(element.x, element.y, element.direction);
             
         } else {
@@ -203,14 +204,7 @@ var checkAllNeighbors = function(x, y, direction){
     
 
     function initRun(x,y, direction){
-        console.log('start');
-        console.log(startingPoint);
         runTracker.push([x,y]);
-        console.log(runTracker);
-        var flip = false;
-        var deadEnd = false;
-        var runPieces = 1;
-        console.log(direction);
 
         if(direction === 'up'){
             nextPiece = scoreBoard.board[y - 1][x];
@@ -225,28 +219,18 @@ var checkAllNeighbors = function(x, y, direction){
                         scoreBoard.board[element[1]][element[0]] = startingPoint;
                         renderViewFlip(element[0], element[1], startingPoint);
                     });
-                    console.log(scoreBoard.board);
                 }
             } else {
                 console.log('notthing');
             }
         }  else if(direction === 'right'){
             nextPiece = scoreBoard.board[y][x + 1];
-            console.log(nextPiece);
-            console.log(scoreBoard.board);
             // check for opp color
             if(nextPiece === scoreBoard.board[y][x]){
-                console.log('run again');
-                console.log(x);
-                console.log(y);
                 initRun(x + 1, y, direction);
             // check for end of run
         } else if(nextPiece === startingPoint){
-                console.log(x);
-                console.log(y);
-                console.log('end run');
                 if(runTracker.length > 0){
-                    console.log('flipp this!');
                     runTracker.forEach(function(element){
                         scoreBoard.board[element[1]][element[0]] = startingPoint;
                         renderViewFlip(element[0], element[1], startingPoint);
@@ -255,8 +239,6 @@ var checkAllNeighbors = function(x, y, direction){
                 }
             // check for empty piece
             } else {
-                console.log('notthing dudes');
-                console.log(scoreBoard.board);
             }
         } else if (direction === 'down'){
             nextPiece = scoreBoard.board[y + 1][x];
@@ -282,7 +264,6 @@ var checkAllNeighbors = function(x, y, direction){
             nextPiece = scoreBoard.board[y][x - 1];
             // check opp color
             if(nextPiece === scoreBoard.board[y][x]){
-                runPieces++;
                 console.log('run again');
                 initRun(x - 1, y, direction);
             // check for end of run
@@ -296,7 +277,6 @@ var checkAllNeighbors = function(x, y, direction){
                     });
                     console.log(scoreBoard.board);
                 }
-            // check for empty 
             } else {
                 console.log('notthing');
             }
