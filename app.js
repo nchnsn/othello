@@ -135,10 +135,14 @@ var addPieceManual = function(turn, x, y){
     // check if next piece is opp color
 var checkNeighbor = function(x,y){
     var pieceUp = scoreBoard.board[y - 1] ? scoreBoard.board[y - 1][x] : 'NA';
+    var pieceUpRight = scoreBoard.board[y - 1] ? scoreBoard.board[y - 1][x + 1] : 'NA';
     var pieceRight = scoreBoard.board[y][x + 1];
     var pieceDown = scoreBoard.board[y + 1] ? scoreBoard.board[y + 1][x] : 'NA';
+    var pieceDownRight = scoreBoard.board[y + 1] ? scoreBoard.board[y + 1][x + 1] : 'NA';
     var pieceLeft = scoreBoard.board[y][x - 1];
-    var neighbors = [pieceUp, pieceRight, pieceDown, pieceLeft];
+    var pieceDownLeft = scoreBoard.board[y + 1] ? scoreBoard.board[y + 1][x - 1] : 'NA';
+    var pieceUpLeft = scoreBoard.board[y - 1] ? scoreBoard.board[y - 1][x - 1] : 'NA';
+    var neighbors = [pieceUp, pieceUpRight, pieceRight, pieceDown, pieceDownRight, pieceLeft, pieceUpLeft];
     if(neighbors.some(function(element){
         return element === scoreBoard.turn;
     })){
@@ -162,6 +166,14 @@ var checkAllNeighbors = function(x, y, direction){
         flip: scoreBoard.board[y - 1] ? scoreBoard.board[y - 1][x] === scoreBoard.turn : false,
         direction: 'up'
     }
+
+    var pieceUpRight = {
+        color: scoreBoard.board[y - 1] ? scoreBoard.board[y - 1][x + 1] : 'NA',
+        x: x + 1,
+        y:y - 1,
+        flip: scoreBoard.board[y - 1] ? scoreBoard.board[y - 1][x + 1] === scoreBoard.turn : false,
+        direction: 'upRight'
+    }
     
 
     var pieceDown = {
@@ -171,6 +183,15 @@ var checkAllNeighbors = function(x, y, direction){
         flip: scoreBoard.board[y + 1] ? scoreBoard.board[y + 1][x] === scoreBoard.turn : false,
         direction: 'down'
     }
+
+     var pieceDownRight = {
+        color: scoreBoard.board[y + 1] ? scoreBoard.board[y + 1][x + 1] : 'NA',
+        x: x + 1,
+        y:y + 1,
+        flip: scoreBoard.board[y + 1] ? scoreBoard.board[y + 1][x + 1] === scoreBoard.turn : false,
+        direction: 'downRight'
+    }
+
     var pieceRight = {
         color: scoreBoard.board[x + 1] ? scoreBoard.board[y][x + 1] : 'NA',
         x: x + 1,
@@ -178,6 +199,15 @@ var checkAllNeighbors = function(x, y, direction){
         flip: scoreBoard.board[x + 1] ? scoreBoard.board[y][x + 1] === scoreBoard.turn : false,
         direction: 'right'
     }
+
+     var pieceDownLeft = {
+        color: scoreBoard.board[y + 1] ? scoreBoard.board[y + 1][x - 1] : 'NA',
+        x: x - 1,
+        y:y + 1,
+        flip: scoreBoard.board[y + 1] ? scoreBoard.board[y + 1][x - 1] === scoreBoard.turn : false,
+        direction: 'downLeft'
+    }
+
     var pieceLeft = {
         color: scoreBoard.board[x - 1] ? scoreBoard.board[y][x - 1] : 'NA',
         x: x - 1,
@@ -185,7 +215,15 @@ var checkAllNeighbors = function(x, y, direction){
         flip: scoreBoard.board[x - 1] ? scoreBoard.board[y][x - 1] === scoreBoard.turn : false,
         direction: 'left'
     }
-    var neighbors = [pieceUp, pieceRight, pieceDown, pieceLeft];
+
+     var pieceUpLeft = {
+        color: scoreBoard.board[y - 1] ? scoreBoard.board[y - 1][x - 1] : 'NA',
+        x: x - 1,
+        y:y - 1,
+        flip: scoreBoard.board[y - 1] ? scoreBoard.board[y - 1][x - 1] === scoreBoard.turn : false,
+        direction: 'upLeft'
+    }
+    var neighbors = [pieceUp, pieceUpRight, pieceDownRight, pieceRight, pieceDown, pieceDownLeft, pieceLeft, pieceUpLeft];
 
     neighbors.forEach(function(element){
         if(element.color === scoreBoard.turn){
@@ -220,16 +258,30 @@ var checkAllNeighbors = function(x, y, direction){
                         renderViewFlip(element[0], element[1], startingPoint);
                     });
                 }
-            } else {
-                console.log('notthing');
             }
-        }  else if(direction === 'right'){
+        } else if (direction === 'upRight'){
+            nextPiece = scoreBoard.board[y - 1][x + 1];
+            if(nextPiece === scoreBoard.board[y][x]){
+                console.log('call again');
+                initRun(x + 1, y - 1, direction);
+            } else if(nextPiece === startingPoint){
+                console.log('end run');
+                if(runTracker.length > 0){
+                    console.log('flipp this!');
+                    runTracker.forEach(function(element){
+                        scoreBoard.board[element[1]][element[0]] = startingPoint;
+                        renderViewFlip(element[0], element[1], startingPoint);
+                    });
+                    console.log(scoreBoard.board);
+                }
+            }
+        } else if(direction === 'right'){
             nextPiece = scoreBoard.board[y][x + 1];
             // check for opp color
             if(nextPiece === scoreBoard.board[y][x]){
                 initRun(x + 1, y, direction);
             // check for end of run
-        } else if(nextPiece === startingPoint){
+            } else if(nextPiece === startingPoint){
                 if(runTracker.length > 0){
                     runTracker.forEach(function(element){
                         scoreBoard.board[element[1]][element[0]] = startingPoint;
@@ -237,15 +289,26 @@ var checkAllNeighbors = function(x, y, direction){
                     });
                     console.log(scoreBoard.board);
                 }
-            // check for empty piece
-            } else {
+            } 
+        } else if(direction === 'downRight'){
+            nextPiece = scoreBoard.board[y + 1][x + 1];
+            // check for opp color
+            if(nextPiece === scoreBoard.board[y][x]){
+                initRun(x + 1, y + 1, direction);
+            // check for end of run
+            } else if(nextPiece === startingPoint){
+                if(runTracker.length > 0){
+                    runTracker.forEach(function(element){
+                        scoreBoard.board[element[1]][element[0]] = startingPoint;
+                        renderViewFlip(element[0], element[1], startingPoint);
+                    });
+                    console.log(scoreBoard.board);
+                }
             }
         } else if (direction === 'down'){
             nextPiece = scoreBoard.board[y + 1][x];
             if(nextPiece === scoreBoard.board[y][x]){
                 console.log('call again');
-                runPieces++;
-                console.log(runPieces);
                 initRun(x, y + 1, direction);
             } else if(nextPiece === startingPoint){
                 console.log('end run');
@@ -257,10 +320,23 @@ var checkAllNeighbors = function(x, y, direction){
                     });
                     console.log(scoreBoard.board);
                 }
-            } else {
-                console.log('notthing');
             }
-        } else  if(direction === 'left'){
+        } else if(direction === 'downLeft'){
+            nextPiece = scoreBoard.board[y + 1][x - 1];
+            // check for opp color
+            if(nextPiece === scoreBoard.board[y][x]){
+                initRun(x - 1, y + 1, direction);
+            // check for end of run
+            } else if(nextPiece === startingPoint){
+                if(runTracker.length > 0){
+                    runTracker.forEach(function(element){
+                        scoreBoard.board[element[1]][element[0]] = startingPoint;
+                        renderViewFlip(element[0], element[1], startingPoint);
+                    });
+                    console.log(scoreBoard.board);
+                }
+            }
+        } else if(direction === 'left'){
             nextPiece = scoreBoard.board[y][x - 1];
             // check opp color
             if(nextPiece === scoreBoard.board[y][x]){
@@ -277,10 +353,23 @@ var checkAllNeighbors = function(x, y, direction){
                     });
                     console.log(scoreBoard.board);
                 }
-            } else {
-                console.log('notthing');
+            } 
+        } else if(direction === 'upLeft'){
+            nextPiece = scoreBoard.board[y - 1][x - 1];
+            // check for opp color
+            if(nextPiece === scoreBoard.board[y][x]){
+                initRun(x - 1, y - 1, direction);
+            // check for end of run
+            } else if(nextPiece === startingPoint){
+                if(runTracker.length > 0){
+                    runTracker.forEach(function(element){
+                        scoreBoard.board[element[1]][element[0]] = startingPoint;
+                        renderViewFlip(element[0], element[1], startingPoint);
+                    });
+                    console.log(scoreBoard.board);
+                }
             }
-        }
+        } 
     }
     // end init run
     
