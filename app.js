@@ -1,15 +1,5 @@
 // *** Model ***
 // Score Board - track the board position, number of pieces, turn, and present score
-    // Board Position
-
-    // Number of Pieces
-
-    // Who's Turn
-
-
-
-    // Current Score
-
     // History
 var scoreBoard = {
     board:[[0,0,0,0,0,0,0,0],
@@ -28,21 +18,13 @@ var scoreBoard = {
 }
 
 // Piece Object - model the individual piece and all of it's props
-
 // Piece Maker - Function
-    // color
-    // Y
-    // X
-    // Number 
-    // neighbors
-        // left, right, up, down
 var Piece = function(turn, x, y){
     this.color = turn;
     this.y = y;
     this.x = x;
     this.neighbors = {};
 }
-
 
 // *** View ***
 // Update View
@@ -63,8 +45,6 @@ var renderViewFlip = function(x, y, color){
     var cell = document.getElementsByTagName("table")[0].children[0].children[y].children[x];
 }
 
-
-
 // *** Controller ***
 // Start Game
 var startGame = function(){
@@ -76,13 +56,7 @@ var startGame = function(){
    
     
 }
-
-
-
-
 // onclick add piece
- 
-
 // add piece on board
     // create new piece push to ScoreBoard
 var addPiece = function(turn, x, y){
@@ -99,14 +73,14 @@ var addPiece = function(turn, x, y){
     var piece = new Piece(turn, x, y);
     scoreBoard.pieces.push(piece);
     scoreBoard.board[y][x] = turn;
+
 // render piece on board
     renderView(x, y, scoreBoard.turn);
+
 // update ScoreBoard
-    
-    scoreBoard.turn === 'white' ? scoreBoard.turn = 'black' : scoreBoard.turn = 'white';
+    scoreBoard.turn === 'white' ? scoreBoard.turn = 'black' : scoreBoard.turn = 'white';    
     document.getElementById('turn').innerHTML = scoreBoard.turn;
-    checkNeighbor(x,y);
-    
+    // checkNeighbor(x,y);
 } 
 
 var addPieceAuto = function(){
@@ -119,6 +93,7 @@ var addPieceAuto = function(){
     renderView(x, y, scoreBoard.turn);
     scoreBoard.turn === 'white' ? scoreBoard.turn = 'black' : scoreBoard.turn = 'white';
     document.getElementById('turn').innerHTML = scoreBoard.turn;
+    flipTurn();
     console.log(checkAllNeighbors(x,y));
 }
 
@@ -128,32 +103,31 @@ var addPieceManual = function(turn, x, y){
     scoreBoard.board[y][x] = turn;
     renderView(x, y, scoreBoard.turn);
 }
-    
 
 // *** FLIP / CHECK NEIGHBORS ***
 
     // check if next piece is opp color
-var checkNeighbor = function(x,y){
-    var pieceUp = scoreBoard.board[y - 1] ? scoreBoard.board[y - 1][x] : 'NA';
-    var pieceUpRight = scoreBoard.board[y - 1] ? scoreBoard.board[y - 1][x + 1] : 'NA';
-    var pieceRight = scoreBoard.board[y][x + 1];
-    var pieceDown = scoreBoard.board[y + 1] ? scoreBoard.board[y + 1][x] : 'NA';
-    var pieceDownRight = scoreBoard.board[y + 1] ? scoreBoard.board[y + 1][x + 1] : 'NA';
-    var pieceLeft = scoreBoard.board[y][x - 1];
-    var pieceDownLeft = scoreBoard.board[y + 1] ? scoreBoard.board[y + 1][x - 1] : 'NA';
-    var pieceUpLeft = scoreBoard.board[y - 1] ? scoreBoard.board[y - 1][x - 1] : 'NA';
-    var neighbors = [pieceUp, pieceUpRight, pieceRight, pieceDown, pieceDownRight, pieceLeft, pieceUpLeft];
-    if(neighbors.some(function(element){
-        return element === scoreBoard.turn;
-    })){
-       console.log('lets flipppa');
-    }
-    console.log('up ' + pieceUp);
-    console.log('right ' + pieceRight);
-    console.log('down ' + pieceDown);
-    console.log('left ' + JSON.stringify(pieceLeft));
-    console.log(JSON.stringify(scoreBoard.board));
-}
+// var checkNeighbor = function(x,y){
+//     var pieceUp = scoreBoard.board[y - 1] ? scoreBoard.board[y - 1][x] : 'NA';
+//     var pieceUpRight = scoreBoard.board[y - 1] ? scoreBoard.board[y - 1][x + 1] : 'NA';
+//     var pieceRight = scoreBoard.board[y][x + 1];
+//     var pieceDown = scoreBoard.board[y + 1] ? scoreBoard.board[y + 1][x] : 'NA';
+//     var pieceDownRight = scoreBoard.board[y + 1] ? scoreBoard.board[y + 1][x + 1] : 'NA';
+//     var pieceLeft = scoreBoard.board[y][x - 1];
+//     var pieceDownLeft = scoreBoard.board[y + 1] ? scoreBoard.board[y + 1][x - 1] : 'NA';
+//     var pieceUpLeft = scoreBoard.board[y - 1] ? scoreBoard.board[y - 1][x - 1] : 'NA';
+//     var neighbors = [pieceUp, pieceUpRight, pieceRight, pieceDown, pieceDownRight, pieceLeft, pieceUpLeft];
+//     if(neighbors.some(function(element){
+//         return element === scoreBoard.turn;
+//     })){
+//        console.log('lets flipppa');
+//     }
+//     console.log('up ' + pieceUp);
+//     console.log('right ' + pieceRight);
+//     console.log('down ' + pieceDown);
+//     console.log('left ' + JSON.stringify(pieceLeft));
+//     console.log(JSON.stringify(scoreBoard.board));
+// }
 
 var checkAllNeighbors = function(x, y, direction){
     var startingPoint = scoreBoard.board[y][x];
@@ -407,3 +381,13 @@ for(var i = 0; i < allCells.length; i++){
 $("table").on("click", "td", addPieceAuto);
 startGame();
 
+// *** CSS related JS ***
+
+    // Triggering the Turn Flip on each Turn Change
+var flipTurn = function(){
+    if(document.getElementById("turnTracker").classList.contains ("circle-container-black")){
+         document.getElementById("turnTracker").classList.remove("circle-container-black");
+    } else {
+         document.getElementById("turnTracker").classList.add("circle-container-black");
+    }
+}

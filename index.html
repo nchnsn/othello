@@ -1,101 +1,131 @@
 	<!DOCTYPE html>
 <html>
 <head>
-	 <link rel="stylesheet" type="text/css" href="othello.css">
-	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<title>Reversi</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="othello.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Bungee|Bungee+Inline|Bungee+Outline|Cinzel+Decorative|Comfortaa|Iceland|Lobster+Two|Megrim|Monoton|Noto+Serif|Old+Standard+TT|Passion+One|Playfair+Display+SC|Poiret+One|Rubik|Rye|Shrikhand" rel="stylesheet">
 </head>
 	<body>
-		<div class="nic">
-			<h1 class="titles">Othello</h1>
+		<nav>
+			<ul>
+				<li style="float:left"><h1 style="color:white">reversi</h1></li>
+				<li class = "menu"><h2>start</h2></li>
+				<li class = "menu"  onclick="flipTurn()"><h2><a href="#">reset</a></h2></li>
+				<li class = "menu"><h2>undo</h2></li>
+				
+			</ul>
+		</nav>
+
+		<div class="row">
+			<div class="col-md-6">
+				<table id="test">
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</table>
+			</div>
+			<div class="col-md-6">
+				<div id="scoreBoard"> 
+					<h2>white:<span id = "whiteScore">0</span></h2>
+					<h2>black:<span id = "blackScore">0</span></h2>
+					<h2>turn:<span id = "turn">0</span></h2>
+					<div id = "turnTracker" class="circle-container">
+						<div class="circle">
+							<div class="front">
+								<p>white</p>
+							</div>
+							<div class="back">
+								<p>black</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-		<table id="test">
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-		</table>
-		<div id="scoreBoard"> 
-			<h2>White:<span id = "whiteScore">0</span></h2>
-			<h2>Back:<span id = "blackScore">0</span></h2>
-			<h2>Turn:<span id = "turn">0</span></h2>
-			<button id = "myButt"</button>
-		</div>
+
 	<script src=app.js></script>
 
 

@@ -1,11 +1,19 @@
 
+/* go back and remove this */
+#turn {
+    visibility: hidden;
+}
+
+
 table {
-    border: 5px solid black;
+    border: 5px solid #333333;
     width: 500px;
     height:500px;
     border-collapse: collapse;
-    background-color: black;
+    background-color: #333333;
     table-layout: fixed;
+    float:left;
+    margin-left:10%;
 
 }
 
@@ -17,12 +25,12 @@ row {
 
 .foo > tr {
 
-    border: 3px solid black;
+    border: 3px solid #333333;
 }
 
 .bar {
 
-    border: 3px solid black;
+    border: 3px solid #333333;
 }
 
 table tr td {
@@ -49,17 +57,19 @@ body {
 }
 
 h1 {
-    color:white;
+    color:#333333;
 }
 
 .piece {
     float: left;
     padding: 15px;
-    margin:10px;
-    width: 10px;
+    margin:15px;
+    width: 15px;
     height: 10px;
     background-color: none;
     border-radius: 25px;
+    animation:clearBoard 10s linear infinite;
+    
 }
 
 
@@ -69,7 +79,7 @@ h1 {
 }
 
 .piece.black {
-    background-color: #000;
+    background-color: #333333;
     border:3px solid #fff;
 }
 
@@ -77,3 +87,152 @@ h1 {
     background-color:none;
 
 }
+
+nav {
+    width:100%;
+    font-family: 'Lobster Two', cursive;
+    margin-bottom:15px;
+    /*padding: 0 0 15px 45px;*/
+    border-bottom: 1px solid #009966;
+}
+
+nav > ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0 150px 0 50px;
+    overflow: hidden;
+}
+
+nav > ul > li {
+    float: right;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+
+.menu {
+    font-family: 'Rubik', sans-serif;
+    color: black;
+   
+}
+#scoreBoard {
+    width: 75%;
+    height: 75%;
+    padding:15px;
+    font-family: 'Rubik', sans-serif;
+    border: 1px solid #009966;
+    background-color:#009966;
+    border-radius:5px;
+}
+
+/* animation for clearing the board */
+@keyframes clearBoard {
+  0% {
+    left: 100%;
+  }
+  100% {
+    left: 0%;
+  }
+}
+
+/* flipping animation */
+
+
+.circle-container {
+	position: relative;
+	perspective: 1000;	
+	margin: 0 auto;	
+}
+		
+.circle-container:hover .circle {
+	transform: rotate3d(45, 45, 0, 180deg);
+}
+		
+.circle-container:hover .outer-ring {
+	transform: rotate3d(45, 0, 0, 180deg);
+}
+
+.circle-container:hover .outer-outer-ring {
+	transform: rotate3d(0, 45, 0, 180deg);
+}
+
+
+.circle-container-black .circle {
+	transform: rotate3d(45, 45, 0, 180deg);
+}
+		
+.circle-container-black .outer-ring {
+	transform: rotate3d(45, 0, 0, 180deg);
+}
+
+.circle-container-black .outer-outer-ring {
+	transform: rotate3d(0, 45, 0, 180deg);
+}
+		
+.circle-container, .front, .back {
+	width: 175px;
+	height: 175px;
+	background-color: rgba(0,0,0,0);
+}
+		
+.circle {
+	transition: 0.5s;
+	transform-style: preserve-3d;
+	transition-timing-function: cubic-bezier(0.785, 0.135, 0.150, 0.860);
+}
+
+.circle {
+	position: relative;
+	width: 175px;
+	height: 175px;
+}
+		
+.front, .back {
+	border-radius: 50%;
+	box-shadow: 0px 0px 20px rgba(0,0,0,0.4);
+	backface-visibility: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+		
+.front {
+	background-color: #fff;
+	z-index: 2;
+}
+		
+.front p {
+	margin-top: 1.2em;
+	font-family: cabin, sans-serif;
+	font-weight: 700;
+	font-size: 3em;
+	text-align: center;
+	color: #333333;
+}
+		
+.back {
+	transform: rotate3d(45,45,0,180deg);
+	background-color: #333333;
+    border:5px solid #ffffff;
+}
+
+.back p {
+	margin-top: 1.2em;
+	font-family: cabin, sans-serif;
+	font-weight: 700;
+	font-size: 3em;
+	text-align: center;
+	color: #ffffff;
+}
+		
+.back-logo {
+	width: 60%;
+	display: block;
+	margin: 2em auto;
+}
+		
+    
+
