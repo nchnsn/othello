@@ -35,25 +35,46 @@ var renderView = function(x, y, color){
     var pieceNode = document.createElement("a");
     pieceNode.classList.add("piece", color);
     cell.appendChild(pieceNode);
+    document.getElementById(color + "Score").innerHTML++;
 }
 
 var renderViewFlip = function(x, y, color){
     var colorToRemove = color === 'black' ? 'white' : 'black';
      document.getElementsByTagName("table")[0].children[0].children[y].children[x].children[0].classList.remove(colorToRemove);
-     document.getElementsByTagName("table")[0].children[0].children[y].children[x].children[0].classList.add(color)
-    var row = document.getElementsByTagName("table")[0].children[0].children[y];
-    var cell = document.getElementsByTagName("table")[0].children[0].children[y].children[x];
+      document.getElementById(colorToRemove + "Score").innerHTML--;
+     document.getElementsByTagName("table")[0].children[0].children[y].children[x].children[0].classList.add("flipInX");
+     document.getElementsByTagName("table")[0].children[0].children[y].children[x].children[0].classList.add(color);
+     document.getElementById(color + "Score").innerHTML++;
 }
 
 // *** Controller ***
 // Start Game
 var startGame = function(){
+    // remove all visual  pieces from board
+   $(".piece").remove();
+    // reset scoreBoard
+    scoreBoard = {
+    board:[[0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0]],
+    pieces:[],
+    turn:'white',
+    white:0,
+    black:0,
+    history:[]
+}
+
+// add initial pieces
     addPiece('white', 3, 3);
     addPiece('black', 3, 4);
     addPiece('white', 4, 4);
     addPiece('black', 4, 3);
     document.getElementById('turn').innerHTML = 'White';
-   
     
 }
 // onclick add piece
@@ -80,7 +101,6 @@ var addPiece = function(turn, x, y){
 // update ScoreBoard
     scoreBoard.turn === 'white' ? scoreBoard.turn = 'black' : scoreBoard.turn = 'white';    
     document.getElementById('turn').innerHTML = scoreBoard.turn;
-    // checkNeighbor(x,y);
 } 
 
 var addPieceAuto = function(){
@@ -106,28 +126,6 @@ var addPieceManual = function(turn, x, y){
 
 // *** FLIP / CHECK NEIGHBORS ***
 
-    // check if next piece is opp color
-// var checkNeighbor = function(x,y){
-//     var pieceUp = scoreBoard.board[y - 1] ? scoreBoard.board[y - 1][x] : 'NA';
-//     var pieceUpRight = scoreBoard.board[y - 1] ? scoreBoard.board[y - 1][x + 1] : 'NA';
-//     var pieceRight = scoreBoard.board[y][x + 1];
-//     var pieceDown = scoreBoard.board[y + 1] ? scoreBoard.board[y + 1][x] : 'NA';
-//     var pieceDownRight = scoreBoard.board[y + 1] ? scoreBoard.board[y + 1][x + 1] : 'NA';
-//     var pieceLeft = scoreBoard.board[y][x - 1];
-//     var pieceDownLeft = scoreBoard.board[y + 1] ? scoreBoard.board[y + 1][x - 1] : 'NA';
-//     var pieceUpLeft = scoreBoard.board[y - 1] ? scoreBoard.board[y - 1][x - 1] : 'NA';
-//     var neighbors = [pieceUp, pieceUpRight, pieceRight, pieceDown, pieceDownRight, pieceLeft, pieceUpLeft];
-//     if(neighbors.some(function(element){
-//         return element === scoreBoard.turn;
-//     })){
-//        console.log('lets flipppa');
-//     }
-//     console.log('up ' + pieceUp);
-//     console.log('right ' + pieceRight);
-//     console.log('down ' + pieceDown);
-//     console.log('left ' + JSON.stringify(pieceLeft));
-//     console.log(JSON.stringify(scoreBoard.board));
-// }
 
 var checkAllNeighbors = function(x, y, direction){
     var startingPoint = scoreBoard.board[y][x];
@@ -345,34 +343,9 @@ var checkAllNeighbors = function(x, y, direction){
             }
         } 
     }
-    // end init run
-    
 }
-
-// end checkAllNeighbors
-
-var checkForRun = function(x,y){
-    var shouldExecute = false;
-    // check all neighbor for opposite piece
-    console.log(checkAllNeighbors(x,y));
-        // if match, check for matches only on the opposite side
-            // if same color, repeat check on opposite side
-            // if opp color change should execute to true
-    // check should exectute flag to see if you should execute run
-        // excute run if true
-}
-
-var executeRun = function(){
-
-}
-
-    
-
-// flip pieces
-    // if check neighbor is true and run is more than 1, flip pieces
 
 // *** Timeline ***
-
 var allCells = document.getElementsByTagName("td");
 for(var i = 0; i < allCells.length; i++){
     var xCor = i < 8 ? i : i % 7;
@@ -390,4 +363,17 @@ var flipTurn = function(){
     } else {
          document.getElementById("turnTracker").classList.add("circle-container-black");
     }
+}
+
+var clearTable = function(){
+    var allPieces = document.getElementsByClassName("piece");
+        for(var i = 0; i < allPieces.length; i++){
+            allPieces[i].classList.add("slideOutDown");
+        }
+    document.getElementById("blackScore").innerHTML = 0;
+    document.getElementById("whiteScore").innerHTML = 0; 
+     if(document.getElementById("turnTracker").classList.contains ("circle-container-black")){
+         document.getElementById("turnTracker").classList.remove("circle-container-black");
+    }   
+    setTimeout(function(){startGame()},500);
 }

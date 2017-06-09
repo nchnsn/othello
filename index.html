@@ -14,10 +14,10 @@
 	<body>
 		<nav>
 			<ul>
-				<li style="float:left"><h1 style="color:white">reversi</h1></li>
-				<li class = "menu"><h2>start</h2></li>
-				<li class = "menu"  onclick="flipTurn()"><h2><a href="#">reset</a></h2></li>
-				<li class = "menu"><h2>undo</h2></li>
+				<li style="float:left"><h1 style="color:white"><strong>reversi</strong></h1></li>
+				<!--<li class = "menu"><h2>start</h2></li>-->
+				<li class = "menu"  onclick="clearTable()"><p><a href="#" class = "reset">restart game</a></p></li>
+				<!--<li class = "menu"><h2>undo</h2></li>-->
 				
 			</ul>
 		</nav>
@@ -109,9 +109,9 @@
 			</div>
 			<div class="col-md-6">
 				<div id="scoreBoard"> 
-					<h2>white:<span id = "whiteScore">0</span></h2>
-					<h2>black:<span id = "blackScore">0</span></h2>
-					<h2>turn:<span id = "turn">0</span></h2>
+					<h1><strong style = "color:#fff">white</strong> <span id = "whiteScore">0</span></h1>
+					<h1><strong>black </strong> <span id = "blackScore">0</span></h1>
+					<h1><strong>turn</strong> <span id = "turn">0</span></h1>
 					<div id = "turnTracker" class="circle-container">
 						<div class="circle">
 							<div class="front">
