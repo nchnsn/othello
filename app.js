@@ -11,6 +11,7 @@ var scoreBoard = {
         [0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0]],
     pieces:[],
+    lastMove:[],
     turn:'white',
     white:0,
     black:0,
@@ -36,15 +37,19 @@ var renderView = function(x, y, color){
     pieceNode.classList.add("piece", color);
     cell.appendChild(pieceNode);
     document.getElementById(color + "Score").innerHTML++;
+    // scoreBoard.lastMove.push('test');
+    console.log(scoreBoard);
+    scoreBoard.history.push(JSON.stringify(scoreBoard));
+    console.log(scoreBoard.history);
 }
 
 var renderViewFlip = function(x, y, color){
     var colorToRemove = color === 'black' ? 'white' : 'black';
-     document.getElementsByTagName("table")[0].children[0].children[y].children[x].children[0].classList.remove(colorToRemove);
-      document.getElementById(colorToRemove + "Score").innerHTML--;
-     document.getElementsByTagName("table")[0].children[0].children[y].children[x].children[0].classList.add("flipInX");
-     document.getElementsByTagName("table")[0].children[0].children[y].children[x].children[0].classList.add(color);
-     document.getElementById(color + "Score").innerHTML++;
+    document.getElementsByTagName("table")[0].children[0].children[y].children[x].children[0].classList.remove(colorToRemove);
+    document.getElementById(colorToRemove + "Score").innerHTML--;
+    document.getElementsByTagName("table")[0].children[0].children[y].children[x].children[0].classList.add("flipInX");
+    document.getElementsByTagName("table")[0].children[0].children[y].children[x].children[0].classList.add(color);
+    document.getElementById(color + "Score").innerHTML++;
 }
 
 // *** Controller ***
@@ -64,6 +69,7 @@ var startGame = function(){
         [0,0,0,0,0,0,0,0]],
     pieces:[],
     turn:'white',
+    lastMove:[],
     white:0,
     black:0,
     history:[]
@@ -106,15 +112,18 @@ var addPiece = function(turn, x, y){
 var addPieceAuto = function(){
     var x = $(this).index();
     var y = $(this).parent().index();
-    var turn = scoreBoard.turn;
-    var piece = new Piece(turn, x, y);
-    scoreBoard.pieces.push(piece);
-    scoreBoard.board[y][x] = turn;
-    renderView(x, y, scoreBoard.turn);
-    scoreBoard.turn === 'white' ? scoreBoard.turn = 'black' : scoreBoard.turn = 'white';
-    document.getElementById('turn').innerHTML = scoreBoard.turn;
-    flipTurn();
-    console.log(checkAllNeighbors(x,y));
+    if(scoreBoard.board[y][x] === 0){
+        var turn = scoreBoard.turn;
+        var piece = new Piece(turn, x, y);
+        scoreBoard.pieces.push(piece);
+        scoreBoard.board[y][x] = turn;
+        renderView(x, y, scoreBoard.turn);
+        scoreBoard.turn === 'white' ? scoreBoard.turn = 'black' : scoreBoard.turn = 'white';
+        document.getElementById('turn').innerHTML = scoreBoard.turn;
+        flipTurn();
+        console.log(checkAllNeighbors(x,y));
+    }
+    
 }
 
 var addPieceManual = function(turn, x, y){
@@ -351,6 +360,8 @@ for(var i = 0; i < allCells.length; i++){
     var xCor = i < 8 ? i : i % 7;
     var yCor = i < 8 ? 0 : Math.floor(i / 7);
 }
+console.log(scoreBoard);
+debugger;
 $("table").on("click", "td", addPieceAuto);
 startGame();
 
@@ -376,4 +387,12 @@ var clearTable = function(){
          document.getElementById("turnTracker").classList.remove("circle-container-black");
     }   
     setTimeout(function(){startGame()},500);
+}
+
+// undo 
+
+var undo = function(){
+    alert("undo this!");
+    scoreBoard.board = JSON.parse(scoreBoard.history[scoreBoard.history.length - 2]);
+    scoreBoard.history.pop();
 }
