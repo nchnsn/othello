@@ -37,8 +37,8 @@ var renderView = function(x, y, color){
     pieceNode.classList.add("piece", color);
     cell.appendChild(pieceNode);
     document.getElementById(color + "Score").innerHTML++;
-    // scoreBoard.lastMove.push('test');
     console.log(scoreBoard);
+    scoreBoard.lastMove.push([x,y]);
     scoreBoard.history.push(JSON.stringify(scoreBoard));
     console.log(scoreBoard.history);
 }
@@ -360,8 +360,6 @@ for(var i = 0; i < allCells.length; i++){
     var xCor = i < 8 ? i : i % 7;
     var yCor = i < 8 ? 0 : Math.floor(i / 7);
 }
-console.log(scoreBoard);
-debugger;
 $("table").on("click", "td", addPieceAuto);
 startGame();
 
@@ -392,7 +390,26 @@ var clearTable = function(){
 // undo 
 
 var undo = function(){
-    alert("undo this!");
-    scoreBoard.board = JSON.parse(scoreBoard.history[scoreBoard.history.length - 2]);
-    scoreBoard.history.pop();
+    console.log(scoreBoard.lastMove);
+    var lastX = scoreBoard.lastMove[scoreBoard.lastMove.length - 1][0];
+    var lastY = scoreBoard.lastMove[scoreBoard.lastMove.length - 1][1];
+    var modelLast = scoreBoard.board[lastY][lastX];
+    var renderLast = document.getElementsByTagName("table")[0].children[0].children[lastY].children[lastX];
+    console.log(lastX);
+    console.log(lastY);
+    console.log(modelLast);
+    console.log(renderLast);
+    console.log(renderLast.children[0].classList);
+    // document.getElementById(modelLast + "Score").innerHTML--;
+    // document.getElementById(scoreBoard.turn + "Score").innerHTML++;
+    
+    renderLast.children[0].remove();
+    scoreBoard = JSON.parse(scoreBoard.history[scoreBoard.history.length - 2]);
+    
+    // var currentColor = scoreBoard.board[scoreBoard.lastMove.pop()[1]][scoreBoard.lastMove.pop()[0]];
+    //scoreBoard.board = JSON.parse(scoreBoard.history[scoreBoard.history.length - 2]);
+    //var last =  document.getElementsByTagName("table")[0].children[0].children[scoreBoard.lastMove.pop()[0]].children[scoreBoard.lastMove.pop()[1]];
+    //last.children[0].classList.remove(currentColor);
+    //scoreBoard.history.pop();
+    
 }
