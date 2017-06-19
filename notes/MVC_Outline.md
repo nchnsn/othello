@@ -1,5 +1,4 @@
 # 
-#code
 # *MVC Outline*
 ## Model
 **Player Turn:** Black, White
