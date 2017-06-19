@@ -22,16 +22,16 @@
 **Header:** Includes game title and option to undo move or restart game. 
 
 ## Controller
-**Place Piece**
+**Place Piece** Function that puts a piece down when a user clicks and calls neccessary functions to update model/view.
 
-**Check/Flip Pieces**
+**Check/Flip Pieces** Function that checks and flips pieces on each move.
 
-**Render Move to View**
+**Render Move to View** Function called when piece is placed that updates the piece to the view. 
 
-**Update Model Based on Move**
+**Update Model Based on Move** Function called when piece is placed that updates the piece to the model. 
 
-**Start Game**
+**Start Game** Function that sets up the first 4 pieces and score when a new game is started.
 
-**Restart Game**
+**Restart Game** Function that clears the board and starts game again.
 
-**Undo**
+**Undo** Function that puts game back to the state before the last move. 
