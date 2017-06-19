@@ -1,0 +1,30 @@
+{
+  "name": "othello",
+  "version": "1.0.0",
+  "description": "Web app version of Othello (reversi).",
+  "main": "app.js",
+  "dependencies": {
+    "chai": "^4.0.2"
+  },
+  "devDependencies": {
+    "mocha": "^3.4.2"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nchnsn/othello.git"
+  },
+  "keywords": [
+    "game",
+    "reversi",
+    "othello"
+  ],
+  "author": "Nic Hansen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nchnsn/othello/issues"
+  },
+  "homepage": "https://github.com/nchnsn/othello#readme"
+}
