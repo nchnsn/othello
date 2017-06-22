@@ -1,5 +1,6 @@
 var Othello = function(){
-    this.turn = null;
+    this.whitesTurn = null;
+    this.status = null;
     this.board = [[null,null,null,null,null,null,null,null],
                 [null,null,null,null,null,null,null,null],
                 [null,null,null,null,null,null,null,null],
@@ -17,21 +18,81 @@ var Othello = function(){
 }
 
 Othello.prototype.changeTurn = function(){
-// toggle player turn 
+    this.whitesTurn = !this.whitesTurn;
+    return this.whitesTurn;
 }
 
-Othello.prototype.placePiece = function(){
-// place piece on board
+Othello.prototype.currentTurn = function(){
+    return this.whitesTurn ? 'white' : 'black';
 }
 
-Othello.prototype.flipPiece = function(){
-// flip existing piece
+Othello.prototype.placePiece = function(row, column){
+    this.board[row][column] = this.currentTurn;
+    return [ this.board[row][column], row, column];
 }
 
-Othello.prototype.removePiece = function(){
-// remove existing piece from board 
+Othello.prototype.flipPiece = function(row, column){
+    this.board[row][column] = !this.currentTurn;
+    return [ this.board[row][column], row, column]
 }
 
-Othello.prototype.checkForFlips = function(){
+Othello.prototype.removePiece = function(row, column){
+    this.board[row][column] = null;
+    return [ this.board[row][column], row, column]
+}
+
+Othello.prototype.flipPieces = function(row, column){
 // execute flips for placed piece
+}
+// Putting together all the methods that encorperate 1 turn
+Othello.prototype.takeTurn = function(row, column){
+    // place piece
+    // flip pieces
+    // udpate score
+    // update history
+    // update newPiece
+    // update flipped
+    // check status
+    // change turn 
+}
+
+// Putting together all the methods that encorperate 1 turn
+Othello.prototype.startGame = function(row, column){
+    // add 4 initial pieces
+    this.board[3][3] = 'black';
+    this.board[4][4] = 'black';
+    this.board[3][4] = 'white';
+    this.board[4][3] = 'white';
+    // set status
+    this.status = 'active';
+    // set turn
+    this.whitesTurn = true;
+    // set score
+    this.whiteScore = 2;
+    this.blackScore = 2;
+
+}
+
+// Putting together all the methods that encorperate 1 turn
+Othello.prototype.restartGame = function(row, column){
+    // place piece
+    // flip pieces
+    // udpate score
+    // update history
+    // update newPiece
+    // update flipped
+    // check status
+    // change turn 
+}
+
+// Putting together all the methods that encorperate 1 turn
+Othello.prototype.undoTurn = function(row, column){
+    // place piece
+    // flip pieces
+    // udpate score
+    // update history
+    // update newPiece
+    // update flipped
+    // check status
+    // change turn 
 }

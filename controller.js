@@ -23,3 +23,5 @@ Controller.prototype.resetGame = function(){
 Controller.prototype.undoMove = function(){
     // undo last move
 }
+
+var testingModules = 'hey bears';
