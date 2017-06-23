@@ -17,9 +17,9 @@ var Othello = function(){
     this.flipped = [];
 }
 
-Othello.prototype.changeTurn = function(game){
+Othello.prototype.changeTurn = function(){
     console.log('change turn');
-    console.log(game);
+    console.log(this);
     this.whitesTurn = !this.whitesTurn;
     return this.whitesTurn;
 }
@@ -29,13 +29,14 @@ Othello.prototype.currentTurn = function(){
 }
 
 Othello.prototype.placePiece = function(row, column){
-    this.board[row][column] = this.currentTurn;
+    this.board[row][column] = this.currentTurn();
     return [ this.board[row][column], row, column];
 }
 
+// helper function for 'flip pieces'
 Othello.prototype.flipPiece = function(row, column){
-    this.board[row][column] = !this.currentTurn;
-    return [ this.board[row][column], row, column]
+    this.board[row][column] = this.currentTurn();
+    return [ this.board[row][column], row, column];
 }
 
 Othello.prototype.removePiece = function(row, column){
@@ -48,20 +49,22 @@ Othello.prototype.flipPieces = function(row, column){
 }
 // Putting together all the methods that encorperate 1 turn
 Othello.prototype.takeTurn = function(row, column){
-    // place piece
-    console.log(this);
-    var game = this;
-    // this.placePiece(row, column);
-    // // flip pieces
-    // this.flipPiece();
-    // udpate score
-
-    // update history
-    // update newPiece
-    // update flipped
-    // check status
-    this.changeTurn(game);
-    return 'i made a move :)';
+    if(this.board[row][column] === null){
+        // place piece
+        this.placePiece(row, column);
+        // flip pieces
+        // this.flipPiece(row, column);
+        // udpate score
+        this.whitesTurn ? this.whiteScore++ && this.blackScore-- : this.blackScore++ && this.whiteScore--;
+        // update history
+        // update newPiece
+        // update flipped
+        // check status
+        this.changeTurn();
+        return 'turn taken at: row - ' + row + ', column - ' + column;
+    } else {
+        return 'already piece here.'
+    }
 }
 
 // Putting together all the methods that encorperate 1 turn

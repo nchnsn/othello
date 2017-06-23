@@ -10,31 +10,46 @@ describe('Model', function() {
     });
 
     it('placing piece should update score', function() {
-        var element = { className: 'exists' };
-        addClass(element, 'exists');
-        var numClasses = element.className.split(' ').length;
-        assert.equal(numClasses, 1);
+        // testing for white's first turn
+        let testGame = new Othello;
+        testGame.startGame();
+        testGame.takeTurn(0, 0);
+        assert.equal(testGame.whiteScore, 3);
+        assert.equal(testGame.blackScore, 1);
+        // testing for blacks second turn
+        let testGame2 = new Othello;
+        testGame2.startGame();
+        testGame2.takeTurn(0, 0);
+        testGame2.takeTurn(0, 1);
+        assert.equal(testGame2.whiteScore, 2);
+        assert.equal(testGame2.blackScore, 2);
     });
 
     it('placing piece should update board', function() {
-        var element = { className: 'exists' };
-        addClass(element, 'new-class');
-        var classes = element.className.split(' ');
-        assert.equal(classes[1], 'new-class');
+        let testGame = new Othello;
+        testGame.startGame();
+        testGame.takeTurn(0, 0);
+        assert.equal(testGame.board[0][0], 'white');
+    });
+
+    it('placing piece should NOT update existing pieces', function() {
+        let testGame = new Othello;
+        testGame.startGame();
+        testGame.takeTurn(3, 3);
+        assert.equal(testGame.board[3][3], 'black');
     });
 
     it('full board should update status to over', function() {
-        var element = { className: 'exists' };
-        addClass(element, 'new-class');
-        var classes = element.className.split(' ');
-        assert.equal(classes[1], 'new-class');
+        let testGame = new Othello;
+        testGame.startGame();
+        // still figuring out what ends the game...
+        assert.equal(testGame.status, 'over');
     });
 
     it('placing piece should update status to active', function() {
-        var element = { className: 'exists' };
-        addClass(element, 'new-class');
-        var classes = element.className.split(' ');
-        assert.equal(classes[1], 'new-class');
+        let testGame = new Othello;
+        testGame.startGame();
+        assert.equal(testGame.status, 'active');
     });
 
     it('starting game should populate model', function() {
