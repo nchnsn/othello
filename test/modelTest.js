@@ -1,9 +1,12 @@
 var assert = chai.assert;
+var expect = chai.expect;
 describe('Model', function() {
+
     it('placing piece should change turn', function() {
-        var element = { className: '' };
-        addClass(element, 'test-class');
-        assert.equal(element.className, 'test-class');
+        let testGame = new Othello;
+        testGame.startGame();
+        testGame.takeTurn(0, 0);
+        assert.equal(testGame.whitesTurn, false);
     });
 
     it('placing piece should update score', function() {
@@ -35,9 +38,26 @@ describe('Model', function() {
     });
 
     it('starting game should populate model', function() {
-        var element = { className: 'exists' };
-        addClass(element, 'new-class');
-        var classes = element.className.split(' ');
-        assert.equal(classes[1], 'new-class');
+        let testGame = new Othello;
+        testGame.startGame();
+        let expected = {
+            whitesTurn:true,
+            status:'active',
+            board:[[null,null,null,null,null,null,null,null],
+                [null,null,null,null,null,null,null,null],
+                [null,null,null,null,null,null,null,null],
+                [null,null,null,'black','white',null,null,null],
+                [null,null,null,'white','black',null,null,null],
+                [null,null,null,null,null,null,null,null],
+                [null,null,null,null,null,null,null,null],
+                [null,null,null,null,null,null,null,null]
+                ],
+            whiteScore:2,
+            blackScore:2,
+            history:[],
+            newPiece:null,
+            flipped:[],
+        };
+        expect(JSON.stringify(testGame)).to.eql(JSON.stringify(expected));
     });
 });

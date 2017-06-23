@@ -17,7 +17,9 @@ var Othello = function(){
     this.flipped = [];
 }
 
-Othello.prototype.changeTurn = function(){
+Othello.prototype.changeTurn = function(game){
+    console.log('change turn');
+    console.log(game);
     this.whitesTurn = !this.whitesTurn;
     return this.whitesTurn;
 }
@@ -42,18 +44,24 @@ Othello.prototype.removePiece = function(row, column){
 }
 
 Othello.prototype.flipPieces = function(row, column){
-// execute flips for placed piece
+    console.log('checking for flipss');
 }
 // Putting together all the methods that encorperate 1 turn
 Othello.prototype.takeTurn = function(row, column){
     // place piece
-    // flip pieces
+    console.log(this);
+    var game = this;
+    // this.placePiece(row, column);
+    // // flip pieces
+    // this.flipPiece();
     // udpate score
+
     // update history
     // update newPiece
     // update flipped
     // check status
-    // change turn 
+    this.changeTurn(game);
+    return 'i made a move :)';
 }
 
 // Putting together all the methods that encorperate 1 turn
@@ -70,7 +78,7 @@ Othello.prototype.startGame = function(row, column){
     // set score
     this.whiteScore = 2;
     this.blackScore = 2;
-
+    var game = this;
 }
 
 // Putting together all the methods that encorperate 1 turn
