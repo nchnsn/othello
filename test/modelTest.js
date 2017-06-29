@@ -6,7 +6,7 @@ var assert = chai.assert;
         it('placing piece should change turn', function() {
             let testGame = new Othello;
             testGame.startGame();
-            testGame.takeTurn(0, 0);
+            testGame.takeTurn(2, 3);
             assert.equal(testGame.whitesTurn, false);
         }); 
 
@@ -29,8 +29,20 @@ var assert = chai.assert;
         it('placing piece should update board', function() {
             let testGame = new Othello;
             testGame.startGame();
-            testGame.takeTurn(0, 0);
-            assert.equal(testGame.board[0][0], 'white');
+            testGame.takeTurn(2, 3);
+            assert.equal(testGame.whiteScore, 4);
+            assert.equal(testGame.blackScore, 1);
+        }); 
+
+        it('placing 4 pieces should update board correctly', function() {
+            let testGame = new Othello;
+            testGame.startGame();
+            testGame.takeTurn(2, 3);
+            testGame.takeTurn(4, 2);
+            testGame.takeTurn(5, 4);
+            testGame.takeTurn(1, 3);
+            assert.equal(testGame.board[3][3], 'black');
+            
         }); 
 
         it('placing piece should NOT update existing pieces', function() {
@@ -308,11 +320,7 @@ var assert = chai.assert;
 
     describe('Undo Turn Method', function() {  
         //need to implement
-        it('sets current model equal to last element in history', function() {
-            let testGame = new Othello;
-            testGame.startGame();
-            assert.equal(testGame.status, 'active');
-        }); 
+
     });
 
     describe('Start Game Method', function() {  

@@ -41,9 +41,6 @@ Othello.prototype.placePiece = function(row, column){
 
 // helper function for 'flip pieces'
 Othello.prototype.flipPiece = function(row, column){
-    console.log('flippin');
-    console.log(this.board[row][column]);
-    console.log(this.oppositeTurn());
     if(this.board[row][column] === 'white'){
       this.board[row][column] = 'black';  
       this.blackScore++ && this.whiteScore--
@@ -51,12 +48,15 @@ Othello.prototype.flipPiece = function(row, column){
         this.board[row][column] = 'white';
         this.whiteScore++ && this.blackScore--;
     }
+    // render piece to the screen;
+    Controller.renderFlip(row, column);
     return [ this.board[row][column], row, column];
 }
 
 Othello.prototype.removePiece = function(row, column){
+    this.board[row][column] === 'white' ? this.whiteScore-- : this.blackScore--;
     this.board[row][column] = null;
-    return [ this.board[row][column], row, column]
+    return [ this.board[row][column], row, column];
 }
 // *** carry out flips on each turn ***
 // check each surrounding piece to see if there are potential moves
@@ -94,7 +94,7 @@ Othello.prototype.flipAvailable = function(row, column){
     }
 
     var checkNeighbors = function(){
-        for(key in neighbors){
+        for(let key in neighbors){
             console.log(key);
             console.log(neighbors[key].value);
             if(neighbors[key].value === game.oppositeTurn()){
@@ -108,43 +108,57 @@ Othello.prototype.flipAvailable = function(row, column){
         console.log(piecesToFlip);
         return piecesToFlip;
     }    
-    // for each of the potential moves to see if valid 
+    // for each of the potential moves to see if valid
+     
     var checkMove = function(direction, row, column){
+        console.log('checking move');
         if(direction === 'up'){
+            console.log('checking up');
             if(game.board[row - 1][column] === game.oppositeTurn()){
                 piecesToFlip.push([row - 1, column]);
                 checkMove('up', row - 1, column);
             } else if(game.board[row - 1][column] === game.currentTurn()){
+                console.log('flipping');
                 piecesToFlip.forEach(function(element){
-                    game.flipPiece(element[0],element[1]);
+                game.flipPiece(element[0],element[1]);
                 });
             } 
         } else if(direction === 'right'){
+            console.log('checking right');
              if(game.board[row][column + 1] === game.oppositeTurn()){
                 piecesToFlip.push([row, column + 1]); 
                 checkMove('right', row, column + 1);
             } else if(game.board[row][column + 1] === game.currentTurn()){
+                console.log('flipping');
                 piecesToFlip.forEach(function(element){
-                    game.flipPiece(element[0],element[1]);
+                game.flipPiece(element[0],element[1]);
                 });
             }            
         } else if(direction === 'down'){
-            if(game.board[row - 1][column] === game.oppositeTurn()){
+            console.log('checking down');
+            console.log(game.board[row - 1][column]);
+            console.log(game.oppositeTurn());
+            if(game.board[row + 1][column] === game.oppositeTurn()){
+                console.log('check again');
                 piecesToFlip.push([row + 1, column]);
                 checkMove('down', row + 1, column);
             } else if(game.board[row + 1][column] === game.currentTurn()){
+                console.log('flipping');
                 piecesToFlip.forEach(function(element){
-                    game.flipPiece(element[0],element[1]);
+                game.flipPiece(element[0],element[1]);
                 });
-            } 
+            } else {
+                console.log('nothing!');
+            }
         } else if(direction === 'left'){
+            console.log('checking left');
             if(game.board[row][column - 1] === game.oppositeTurn()){
                 piecesToFlip.push([row, column - 1]);
                 checkMove('left', row, column - 1);
             } else if(game.board[row][column - 1] === game.currentTurn()){
-                console.log('ending');
+                console.log('flipping');
                 piecesToFlip.forEach(function(element){
-                    game.flipPiece(element[0],element[1]);
+                game.flipPiece(element[0],element[1]);
                 });
             } 
         }
@@ -155,7 +169,6 @@ Othello.prototype.flipAvailable = function(row, column){
 
 // Valid Move Check - test to see if a valid move
 Othello.prototype.validMove = function(row, column){
-    var piecesToFlip = [];
     var validMove = false;
     var game = this;
     var neighbors = {
@@ -165,100 +178,138 @@ Othello.prototype.validMove = function(row, column){
             row:row - 1,
             column:column
             },
+        upRight:{
+            value:this.board[row - 1] && this.board[row - 1][column + 1] ? this.board[row - 1][column + 1] : null,
+            direction:'upRight',
+            row:row - 1,
+            column:column + 1
+        },
         right:{
             value:this.board[row][column + 1] ? this.board[row][column + 1] : null ,
             direction:'right',
             row:row,
             column:column + 1
-            },
+        },
+        downRight:{
+            value:this.board[row + 1] && this.board[row + 1][column + 1] ? this.board[row + 1][column + 1] : null,
+            direction:'downRight',
+            row:row + 1,
+            column:column + 1
+        },
         down:{
             value:this.board[row + 1] ? this.board[row + 1][column] : null,
             direction:'down',
             row:row + 1,
             column:column
         },
+
+        downLeft:{
+            value:this.board[row + 1] && this.board[row + 1][column - 1] ? this.board[row + 1][column - 1] : null,
+            direction:'downLeft',
+            row:row + 1,
+            column:column - 1
+        },
         left:{
             value:this.board[row][column - 1] ? this.board[row][column - 1] : null, 
             direction:'left',
             row:row,
             column:column - 1
-        }
+        },
+        upLeft:{
+            value:this.board[row - 1] && this.board[row - 1][column - 1] ? this.board[row - 1][column - 1] : null,
+            direction:'upLeft',
+            row:row - 1,
+            column:column - 1
+        }       
     }
-    let checkMove = function(direction, row, column){
+
+    var checkMove = function(direction, row, column){
+        console.log('checking for flips...');
         if(direction === 'up'){
             if(game.board[row - 1][column] === game.oppositeTurn()){
-                piecesToFlip.push([row - 1, column]);
+                console.log('same color up...');
+                game.flipped.push([row, column]);
                 checkMove('up', row - 1, column);
             } else if(game.board[row - 1][column] === game.currentTurn()){
-                return true;
+                console.log('got a flip up!');
+                game.flipped.push([row, column]);
+                validMove = true;
             } 
+
         } else if(direction === 'right'){
              if(game.board[row][column + 1] === game.oppositeTurn()){
-                piecesToFlip.push([row, column + 1]); 
+                console.log('same color right...');
+                game.flipped.push([row, column]);
                 checkMove('right', row, column + 1);
             } else if(game.board[row][column + 1] === game.currentTurn()){
-                return true;
+                 console.log('got a flip right!');
+                 game.flipped.push([row, column]);
+                 validMove = true;
             }       
         } else if(direction === 'down'){
-            if(game.board[row - 1][column] === game.oppositeTurn()){
-                piecesToFlip.push([row + 1, column]);
+            if(game.board[row + 1][column] === game.oppositeTurn()){
+                console.log('same color down...');
+                game.flipped.push([row, column]);
                 checkMove('down', row + 1, column);
             } else if(game.board[row + 1][column] === game.currentTurn()){
-                return true;
+                console.log('got a flip down!');
+                game.flipped.push([row, column]);
+                validMove = true;
             } 
         } else if(direction === 'left'){
             if(game.board[row][column - 1] === game.oppositeTurn()){
-                piecesToFlip.push([row, column - 1]);
+                console.log('same color left...');
+                game.flipped.push([row, column]);
                 checkMove('left', row, column - 1);
             } else if(game.board[row][column - 1] === game.currentTurn()){
-                console.log('ending');
-                return true;
+                console.log('got a flip left');
+                game.flipped.push([row, column]);
+                validMove = true;
             } 
         }
-        return false;
+        return validMove;
     };
 
-    for(key in neighbors){
-        console.log(key);
-        console.log(neighbors[key].value);
+    for(let key in neighbors){
+        console.log('placed a ' + this.currentTurn() + ' piece')
+        console.log('checking: ' + key);
+        console.log('color is: ' + neighbors[key].value);
         if(neighbors[key].value === game.oppositeTurn()){
-            console.log('move here');
-            piecesToFlip.push([neighbors[key].row, neighbors[key].column]);
-            validMove = checkMove(key, neighbors[key].row, neighbors[key].column) ? true : false;
+            console.log('opp color, check for flips.');
+            checkMove(key, neighbors[key].row, neighbors[key].column);
+            console.log('Any flips? ' + validMove);
         } else {
             console.log('no move');
         }
     }
+    // this.newPiece Update
+    console.log(validMove);
     return validMove;
-    // console.log(piecesToFlip);
-    // if(piecesToFlip.length > 0){
-    //     return true;
-    // }
-    // else {
-    //     return false;
-    // } 
 }
 
 
 
 // Putting together all the methods that encorperate 1 turn
 Othello.prototype.takeTurn = function(row, column){
-    if(this.board[row][column] === null){
-        // place piece
+        // clear turn (current move, piece);
+        this.flipped = [];
+    if(this.board[row][column] === null && this.validMove(row,column)){
+        
+        this.newPiece = [row, column];
         this.placePiece(row, column);
-        // flip pieces
         this.flipAvailable(row, column);
-        // update history
-        // update newPiece
-        // update flipped
-        // check status
         this.changeTurn();
-        return 'turn taken at: row - ' + row + ', column - ' + column;
+        this.newPiece = [row, column];
+        this.history.push(JSON.stringify(this)); 
+        Controller.updateScoreBlack();
+        Controller.updateScoreWhite();
+        Controller.updatePlayerTurn();
+        return true;
     } else {
-        return 'already piece here.'
-    }
+            console.log('not a valid move, try again!');
+            return false;
+        }
 }
-
 // Putting together all the methods that encorperate 1 turn
 Othello.prototype.startGame = function(row, column){
     // add 4 initial pieces
@@ -274,28 +325,29 @@ Othello.prototype.startGame = function(row, column){
     this.whiteScore = 2;
     this.blackScore = 2;
     var game = this;
+    Controller.placePiece('black',3,3);
+    Controller.placePiece('black',4,4);
+    Controller.placePiece('white',4,3);
+    Controller.placePiece('white',3,4);
+
 }
 
 // Putting together all the methods that encorperate 1 turn
-Othello.prototype.restartGame = function(row, column){
-    // place piece
-    // flip pieces
-    // udpate score
-    // update history
-    // update newPiece
-    // update flipped
-    // check status
-    // change turn 
+Othello.prototype.restartGame = function(){
+    newBoard.resetBoard();
+    newBoard.renderBoard();
+    // newGame = new Othello;
+    // newGame.startGame();
 }
 
 // Putting together all the methods that encorperate 1 turn
 Othello.prototype.undoTurn = function(row, column){
-    // place piece
-    // flip pieces
-    // udpate score
-    // update history
-    // update newPiece
-    // update flipped
-    // check status
-    // change turn 
+        this.removePiece(this.newPiece[0], this.newPiece[1]);
+        this.flipped.forEach(function(element){
+            newGame.flipPiece(element[0],element[1]);
+        });
+        this.changeTurn();
+        Controller.updateScoreBlack();
+        Controller.updateScoreWhite();
+        Controller.updatePlayerTurn();
 }

@@ -16,28 +16,31 @@
 			<ul>
 				<li style="float:left"><h1 style="color:white"><strong>reversi</strong></h1></li>
 				<!--<li class = "menu"><h2>start</h2></li>-->
-				<li class = "menu"  onclick="clearTable()"><p><a href="#" class = "reset">restart game</a></p></li>
-				<li class = "menu" onclick="undo()"><h2><a href="#"> undo</a></h2></li>
+				<li class = "menu" id = "reset"><p><a href="#" class = "reset" onclick="newBoard.resetBoard()">restart game</a></p></li>
+				<li class = "menu"><p><a href="#" onclick="newBoard.undoMove()" style="float:right"> <span id="undo"><strong>undo</strong></span></a></p></li>
 				
 			</ul>
 		</nav>
-
+		<div class="alert alert-warning alert-dismissible" role="alert" id="invalidMove"> 
+  			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  			<strong>Not a valid move!</strong> Choose a valid spot on the board.
+		</div>
 		<div class="row">
-			<div class="col-md-6">
-				<!-- where Board will go -->
+			<!-- where board will go -->
+			<div class="col-md-6" id="boardWrapper">
 			</div>
+			<!-- end of board -->
 			<div class="col-md-6">
 				<div id="scoreBoard"> 
 					<h1><strong style = "color:#fff">white</strong> <span id = "whiteScore">0</span></h1>
 					<h1><strong>black </strong> <span id = "blackScore">0</span></h1>
-					<h1><strong>turn</strong> <span id = "turn">0</span></h1>
 					<div id = "turnTracker" class="circle-container">
 						<div class="circle">
 							<div class="front">
-								<p>white</p>
+								<p>white turn</p>
 							</div>
 							<div class="back">
-								<p>black</p>
+								<p>black turn</p>
 							</div>
 						</div>
 					</div>
